@@ -9,24 +9,34 @@ def print_menu
 end
 
 def input_students
-  puts "Please enter the name and country of the students"
+  cohorts = ["January", "February", "March", "April", "May",
+  "June", "July", "August", "September", "October", "November", "December"]
+  
+  puts "Please enter the name of the student"
   puts "To finish, just hit return twice"
 
-  loop do
   name = gets.chomp
-  month = gets.chomp
 
   while !name.empty? do
-    @students << {name: name, cohort: month}
-    if @students.count > 1
-      puts "Now we have #{@students.count} students"
-    else
-      puts "Now we have 1 student"
-    end
-  
+    puts "What is the student's cohort? If no cohort is given, the default is January"
+    cohort = gets.chomp
+    cohort.capitalize
+      if cohort.include?(cohorts.to_s)
+        cohort
+      else
+        cohort = "January"
+      end
+      @students << {name: name, cohort: cohort}
+
+      if @students.count > 1
+      puts "Now we have #{@students.count} students. Please enter next name"
+      else
+      puts "Now we have 1 student. Please enter next name"
+      end
+    
     name = gets.chomp
-    month = gets.chomp
   end
+  return @students
 end
 
 def interactive_menu
@@ -96,7 +106,7 @@ def load_students(filename = "students.csv")
   file = File.open(filename, "r")
   file.readlines.each do |line|
   name, cohort = line.chomp.split(',')
-    @students << {name: name, cohort: cohort.to_sym}
+    @students << {name: name, cohort: cohort}
   end
   file.close
 end
